@@ -1,6 +1,6 @@
 # sweet-animation
 
-A simple demo project showcasing using Unity to animate a think with audio.
+A simple demo project showcasing using Unity to animate a thing with audio.
 
 ---
 
