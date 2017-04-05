@@ -24,92 +24,15 @@ using UnityEngine;
 
 public class Blob : MonoBehaviour
 {
-    private const int NUM_SAMPLES = 1024;
-    private const float VOLUME = 1.0f;
-
-
-    private AudioSource audioSource;
     private Transform fbx;
-
     private BlobChunk[] chunks;
-
-    private float[] samples = new float[NUM_SAMPLES];
-
-    private int numLoops = 0;
-    private float sumRms = 0.0f;
 
 
 #region MONOBEHAVIOR
-    private void Awake()
-    {
-        SetupObjectRefs();
-        // SetupAudioData();
-    }
-
-    private void Update()
-    {
-        float rms, averageRms;
-        rms = GetRms();
-        sumRms += rms;
-        numLoops += 1;
-        averageRms = sumRms / numLoops;
-
-        if (rms < averageRms)
-            rms = 0.0f;
-
-        for (int x = 0; x < chunks.Length; x++)
-            chunks[x].sample = rms;
-    }
+    private void Awake() { SetupObjectRefs(); }
 #endregion
 
 #region PRIVATE
-    private float GetRms()
-    {
-        float sum = 0.0f;
-        audioSource.GetOutputData(samples, 0);
-        for (int x = 0; x < NUM_SAMPLES; x++)
-            sum += samples[x] * samples[x];
-
-        float rmsValue = Mathf.Sqrt(sum / NUM_SAMPLES);
-        float dbValue = 20 * Mathf.Log10(rmsValue / 0.1f);
-        if (dbValue < -160)
-            dbValue = -160;
-
-        return rmsValue * VOLUME;
-    }
-
-    private void SetupAudioData()
-    {
-        int numSamples;
-        float min, mean, max;
-
-        min = 0.0f;
-        mean = 0.0f;
-        max = 0.0f;
-        numSamples = audioSource.clip.samples;
-        samples = new float[numSamples];
-
-        audioSource.clip.GetData(samples, 1);
-        for (int x = 0; x < numSamples; x++)
-        {
-            float sample = samples[x];
-            if (sample < min)
-                min = sample;
-            else if (sample > max)
-                max = sample;
-
-            mean += sample;
-        }
-
-        mean /= (float)numSamples;
-
-        for (int x = 0; x < chunks.Length; x++)
-        {
-            chunks[x].sampleMin = Random.Range(min, mean);
-            chunks[x].sampleMax = max;
-        }
-    }
-
     private void SetupBlobChunkRefs()
     {
         int numChildren = fbx.childCount;
@@ -124,7 +47,6 @@ public class Blob : MonoBehaviour
 
     private void SetupObjectRefs()
     {
-        audioSource = GetComponent<AudioSource>();
         fbx = transform.Find("Model").Find("blob");
         SetupBlobChunkRefs();
     }

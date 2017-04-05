@@ -1,6 +1,7 @@
 # sweet-animation
 
-A simple demo project showcasing using Unity to animate a thing with audio.
+A simple demo project showcasing chunks of a model generated using the Voronoi
+algorithm, animating along their vector parent->self.
 
 ---
 
@@ -11,9 +12,3 @@ Nathan Sizemore, nathanrsizemore@gmail.com
 ### License
 
 Available under the MIT license. See the LICENSE file for more info.
-
-Creo - Memory is licensed under the Creative Commons Attribution-NonCommercial 4.0.
-
-### Attribution
-
-[Creo - Memory](http://freemusicarchive.org/music/Creo/~/Memory_1520)

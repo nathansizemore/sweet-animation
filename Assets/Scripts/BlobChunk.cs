@@ -24,17 +24,6 @@ using UnityEngine;
 
 public class BlobChunk : MonoBehaviour
 {
-    private const float UPDATE_INTERVAL = 0.05f;
-
-
-    public float sampleMin = 0.0f;
-    public float sampleMax = 0.0f;
-
-    public float sample = 0.0f;
-
-
-    private float waited = 0.0f;
-
     private Vector3 origin = Vector3.zero;
     private Vector3 vector = Vector3.zero;
 
@@ -45,13 +34,7 @@ public class BlobChunk : MonoBehaviour
     private void Update()
     {
         UpdatePosition();
-
-        // waited += Time.deltaTime;
-        // if (waited > UPDATE_INTERVAL)
-        // {
-        //     UpdatePosition();
-        //     waited = 0.0f;
-        // }
+        UpdateRotation();
     }
 #endregion
 
@@ -64,24 +47,12 @@ public class BlobChunk : MonoBehaviour
 
     private void UpdatePosition()
     {
-        float mappedSample = BlobChunk.Map(sample,
-                                           sampleMin,
-                                           sampleMax,
-                                           0.0f,
-                                           1.1f);
 
-        //Vector3 newPosition = origin + (vector * mappedSample);
-        Vector3 newPosition = origin + (vector * sample);
-        transform.position = newPosition;
     }
 
-    private static float Map(float value,
-                             float fromMin,
-                             float fromMax,
-                             float toMin,
-                             float toMax)
+    private void UpdateRotation()
     {
-        return toMin + (value - fromMin) * (toMax - toMin) / (fromMax - fromMin);
+
     }
 #endregion
 }
