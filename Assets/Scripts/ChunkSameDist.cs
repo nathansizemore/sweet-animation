@@ -22,7 +22,7 @@
 using UnityEngine;
 
 
-public class BlobChunk : MonoBehaviour
+public class ChunkSameDist : MonoBehaviour
 {
     private const int PATH_LEN = 50;
     private const float TRAVEL_MIN = 0.25f;
