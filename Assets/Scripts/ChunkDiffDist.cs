@@ -22,9 +22,10 @@
 using UnityEngine;
 
 
-public class ChunkSameDist : MonoBehaviour
+public class ChunkDiffDist : MonoBehaviour
 {
-    private const int PATH_LEN = 50;
+    private const int PATH_LEN_MIN = 10;
+    private const int PATH_LEN_MAX = 50;
     private const float TRAVEL_MIN = 0.25f;
     private const float TRAVEL_MAX = 0.50f;
     private const float UPDATE_INTERVAL = 0.25f;
@@ -33,9 +34,10 @@ public class ChunkSameDist : MonoBehaviour
     private Vector3 origin = Vector3.zero;
     private Vector3 vector = Vector3.zero;
 
+    private int pathLen;
     private int pathOffset = 0;
     private int offsetIncrementor = 1;
-    private readonly Vector3[] path = new Vector3[PATH_LEN];
+    private Vector3[] path;
 
     private float waited = 0.0f;
 
@@ -67,13 +69,16 @@ public class ChunkSameDist : MonoBehaviour
 
     private void GeneratePath()
     {
+        pathLen = Random.Range(PATH_LEN_MIN, PATH_LEN_MAX + 1);
+        path = new Vector3[pathLen];
+
         float t, incrementor, distance;
         distance = Random.Range(TRAVEL_MIN, TRAVEL_MAX);
-        incrementor = distance / PATH_LEN;
+        incrementor = distance / pathLen;
         t = 0.0f;
 
         Vector3 end = origin + (vector * distance);
-        for (int x = 0; x < PATH_LEN; x++)
+        for (int x = 0; x < pathLen; x++)
         {
             Vector3 point = Vector3.Lerp(origin, end, t);
             // Vector3 point = Vector3.Slerp(origin, end, t);
@@ -85,12 +90,13 @@ public class ChunkSameDist : MonoBehaviour
 
     private void UpdatePosition()
     {
-        const int OFFSET_MIN = 0;
-        const int OFFSET_MAX = PATH_LEN - 1;
+        int offsetMin, offsetMax;
+        offsetMin = 0;
+        offsetMax = pathLen - 1;
 
-        if (pathOffset == OFFSET_MIN)
+        if (pathOffset == offsetMin)
             offsetIncrementor = 1;
-        else if (pathOffset == OFFSET_MAX)
+        else if (pathOffset == offsetMax)
             offsetIncrementor = -1;
 
         transform.position = path[pathOffset];
